@@ -61,8 +61,8 @@ async function runBenchmarks(reactPath) {
 }
 
 // get the performance benchmark results
-// from remote master (default React repo)
-async function benchmarkRemoteMaster() {
+// from remote main (default React repo)
+async function benchmarkRemoteMain() {
   console.log(chalk.gray(`- Building React bundles...`));
   let commit = argv.remote;
 
@@ -106,15 +106,15 @@ async function runRemoteBenchmarks(showResults) {
     chalk.white.bold('Running benchmarks for ') +
       chalk.yellow.bold('Remote (Merge Base)')
   );
-  const remoteMasterResults = await benchmarkRemoteMaster();
+  const remoteMainResults = await benchmarkRemoteMain();
 
   if (showResults) {
-    printResults(null, remoteMasterResults);
+    printResults(null, remoteMainResults);
   }
-  return remoteMasterResults;
+  return remoteMainResults;
 }
 
-async function compareLocalToMaster() {
+async function compareLocalToMain() {
   console.log(
     chalk.white.bold('Comparing ') +
       chalk.green.bold('Local (Current Branch)') +
@@ -122,12 +122,12 @@ async function compareLocalToMaster() {
       chalk.yellow.bold('Remote (Merge Base)')
   );
   const localResults = await runLocalBenchmarks(false);
-  const remoteMasterResults = await runRemoteBenchmarks(false);
-  printResults(localResults, remoteMasterResults);
+  const remoteMainResults = await runRemoteBenchmarks(false);
+  printResults(localResults, remoteMainResults);
 }
 
 if ((runLocal && runRemote) || (!runLocal && !runRemote)) {
-  compareLocalToMaster().then(() => process.exit(0));
+  compareLocalToMain().then(() => process.exit(0));
 } else if (runLocal) {
   runLocalBenchmarks(true).then(() => process.exit(0));
 } else if (runRemote) {
